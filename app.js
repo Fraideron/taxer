@@ -97,7 +97,23 @@ app.put('/insert', function(req, res) {
     res.send('All is good!');
 });
 
-var server = app.listen(8081, function () {
+
+
+app.put('/update', function(req, res) {
+    var url = 'mongodb://localhost:27017/taxer';
+    MongoClient.connect(url, function (err, db) {
+        assert.equal(null,err);
+        var collection = db.collection('main');
+        collection.updateMany({type: 'gas'}, {$set:{type: 'oil'}});
+        db.close();
+    });
+    res.send('All is good!');
+});
+
+
+
+
+var server = app.listen(8082, function () {
 
     var host = server.address().address;
     var port = server.address().port;
