@@ -74,7 +74,28 @@ app.get('/entries/:type', function(req, res) {
 });
 
 
+app.put('/insert', function(req, res) {
 
+
+    var testDoc =  {
+        timestamp: 12334,
+        value: 43,
+        type: "gas",
+        tax: 24
+    };
+
+
+    var url = 'mongodb://localhost:27017/taxer';
+    MongoClient.connect(url, function (err, db) {
+        assert.equal(null,err);
+        db.collection('main').insertOne( testDoc, function(err, result){
+            assert.equal(null,err);
+            console.log('Item inserted');
+            db.close();
+        });
+    })
+    res.send('All is good!');
+});
 
 var server = app.listen(8081, function () {
 
