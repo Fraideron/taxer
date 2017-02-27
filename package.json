@@ -1,31 +1,30 @@
 {
-  "name": "taxer",
+  "name": "Taxer",
   "version": "0.0.0",
-  "private": true,
+  "description": "Online implementation some taxer ",
+  "main": "index.js",
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node --harmony api/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "dependencies": {
-    "body-parser": "~1.16.0",
-    "cookie-parser": "~1.4.3",
-    "debug": "~2.6.0",
-    "express": "~4.14.1",
-    "jade": "~1.11.0",
-    "mongodb": "^2.2.24",
-    "morgan": "~1.7.0",
-    "serve-favicon": "~2.3.2"
-  },
-  "main": "app.js",
-  "devDependencies": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Fraideron/taxer.git"
+    "url": "git+https://github.com/Fraideron/taxer"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Valeriy Demidov & Vlad Dotsenko",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Fraideron/taxer/issues"
+    "url": "https://github.com/Fraideron/taxer"
   },
-  "homepage": "https://github.com/Fraideron/taxer#readme",
-  "description": ""
+  "homepage": "https://github.com/Fraideron/taxer",
+  "dependencies": {
+    "expressjs": "^1.0.1",
+    "mongodb": "^2.2.24"
+  },
+  "devDependencies": {},
+  "keywords": [
+    "board-game",
+    "Evoluiton",
+    "online"
+  ]
 }
