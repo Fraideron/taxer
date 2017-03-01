@@ -2,22 +2,16 @@
 
 module.exports = {
 
-  'put /table/:id/start': [require('./handlers/table-start')],
-  'get /table/:id/prospects': [require('./handlers/get-table-prospects')],
-  'get /player/:id/prospects': [require('./handlers/get-player-prospects')],
-  'put /player/:id/enter/:tableId': [require('./handlers/player-enter-table')],
-  'put /player/:id/leave/:tableId': [require('./handlers/player-leave-table')],
-  'post /motion/:tableId/:playerId': [require('./handlers/motion')],
-
-  'post /table': function(server) {
-    return [
-      function (req, res, next) {
-        const tableId = coreProxy('table').createEntity();
-        console.log('yooooooooo');
-        next(req, res);
-      },
-      server._modules.database.resources.table.insert()
-    ];
-  },
-
+  'get /wastes': [require('./handlers/wastes')],
+  'get /wastes/:type': [require('./handlers/wastes')],
+  'put /wastes': [require('./handlers/wastes')],
+  'post /wastes/:n': [require('./handlers/wastes')],
+  'delete /wastes/:n': [require('./handlers/wastes')],
+  'get /taxes': [require('./handlers/taxes')],
+  'put /taxes': [require('./handlers/taxes')],
+  'post /taxes/:type': [require('./handlers/taxes')],
+  'delete /taxes/:type': [require('./handlers/taxes')],
+  'get /payments': [require('./handlers/payments')],
+  'get /payments/:type': [require('./handlers/payments')],
+  'put /payments/:type': [require('./handlers/payments')]
 };
