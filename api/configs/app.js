@@ -6,5 +6,5 @@ module.exports = {
 	environment: 'prod',
 	port: 3333,
 	apiPrefix: 'api',
-	version: require('./../package.json').version
+	version: require('./../../package.json').version
 };
