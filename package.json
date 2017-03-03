@@ -10,7 +10,11 @@
     "expressjs": "^1.0.1",
     "mongodb": "^2.2.24"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "mocha": "^3.2.0",
+    "should": "^11.2.0",
+    "supertest": "^3.0.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
