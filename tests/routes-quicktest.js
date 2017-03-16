@@ -1,5 +1,8 @@
 'use strict';
 
+const config = require('./../api/configs/app');
+config.environment = 'test';
+
 const routes = require('./../api/routes');
 const app = require('./../api/server');
 const request = require('supertest');
