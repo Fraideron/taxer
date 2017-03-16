@@ -1,0 +1,15 @@
+Backend:
+  Routes:
+    ☐ Ensure every route returns JSON if server processed request
+      No timeouts, no any non-json content types, no native 500 errors when something fails
+    ☐ Add testing routes group if in `test` environment
+      ☐ Route that simply throws an error
+    ☐ Handle uncaught exceptions for routes
+    ☐ Provide all routes with dummy in-memory data and ensure they passing tests
+      imitate mongo with default variables
+    ☐ Connect routes to mongo 1 by 1 and check it to suite tests
+  Logging:
+    ☐ Progressive logger (bunyan, winston, etc.)
+    ☐ Tune logging levels and streams:
+      test/prod: only to file
+      dev: to file and console both + file carousele
