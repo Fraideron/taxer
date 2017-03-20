@@ -23,7 +23,7 @@ module.exports = {
     'get /wastes/:type': handler('wastes').getByType,
     'put /wastes': handler('wastes').put,
     'post /wastes/:n': handler('wastes').post,
-    'delete /wastes/:n': handler('wastes').delete,
+    'delete /wastes/:id': handler('wastes').delete,
     'get /taxes': handler('taxes').GET,
     'put /taxes': handler('taxes').put,
     'post /taxes/:type': handler('taxes').post,
