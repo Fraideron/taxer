@@ -3,7 +3,7 @@
  */
 module.exports = {
     users: {
-        "_id" : ObjectId("58b5b9b1c3bdb025cf8c4d06"),
+        "_id" : 'ObjectId("58b5b9b1c3bdb025cf8c4d06")',
         "login" : [],
         "data" : {
             "payments" : [
@@ -29,14 +29,14 @@ module.exports = {
                     "date" : "2017-02-18"
                 },
                 {
-                    "type" : "gas",
+                    "type" : "oil",
                     "value" : 133,
                     "date" : "2017-03-18",
                     "payed" : 40,
                     "rate" : 4
                 },
                 {
-                    "type" : "gas",
+                    "type" : "electric",
                     "value" : 143,
                     "date" : "2017-04-18",
                     "payed" : 0,
@@ -47,6 +47,5 @@ module.exports = {
                 {}
             ]
         }
-
     }
 };
