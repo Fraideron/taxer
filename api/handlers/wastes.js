@@ -9,19 +9,16 @@ let storage = require('./../storage');
 module.exports = {
 
     GET:function(req, res,  next) {
-        res.setHeader('Content-Type', 'application/json');
-        res.send(JSON.stringify(storage.users, null, 4));
+        res.json(storage.users.data.wastes)
     },
 
     getByType: function(req, res, next) {
         let wastes = storage.users.data.wastes;
-        var result = wastes.filter(
-            function (value) {
+        var result = wastes.filter(function (value) {
                 return (value.type === req.params.type);
             }
         );
-        res.setHeader('Content-Type', 'application/json');
-        res.send(JSON.stringify(result, null, 4));
+       res.json(result);
     },
 
     put: function(req, res, next){
@@ -40,7 +37,7 @@ module.exports = {
     },
 
     post: function(req, res, next){
-
+        //todo: check if key existing in array
     },
 
     delete: function (req, res, next) {
@@ -51,7 +48,7 @@ module.exports = {
             (indexForDelete >= 0)){
             // todo: slice is not workink
             console.log('index:' + indexForDelete);
-            storage.users.data.wastes.slice(indexForDelete,1);
+            storage.users.data.wastes.splice(indexForDelete,1);
             res.send({
                 message: 'All is OK, the waste is deleted',
                 code: 200
