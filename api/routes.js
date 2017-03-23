@@ -20,6 +20,9 @@ const handler = name => {
 // -------------------------------------------------------------------- handlers list
 module.exports = {
     productRoutes: {
+        'get /user': null,
+        'get /user/profile': null,
+        'get /user/meta': null,
         'get /wastes': handler('wastes').GET,
         'get /wastes/:type': handler('wastes').getByType,
         'put /wastes': handler('wastes').put,
