@@ -22,10 +22,13 @@ module.exports = {
         storage.users.data.payments.push({
             date: time,
             bill:[
-
+                req.body
             ]
         });
-        res.send(time);
+        res.send({
+            message:'ok',
+            code:'200'
+        });
     }
 
 };
