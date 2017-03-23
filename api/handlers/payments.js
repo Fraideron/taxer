@@ -19,7 +19,12 @@ module.exports = {
 
     put: function (req, res, next) {
         let time = new Date().toISOString();
+        storage.users.data.payments.push({
+            date: time,
+            bill:[
 
+            ]
+        });
         res.send(time);
     }
 
