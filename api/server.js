@@ -12,7 +12,10 @@ const routes = require('./routes.js').testRoutes;
 //todo: add a 'bodyParser'(express module)
 //todo: add a function for different running
 
-app.use(logger('dev'));;
+logger.token('id', function getId (req) {
+    return req.id;
+});
+app.use(logger(':id :method :url :response-time :date[web]'));;
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
