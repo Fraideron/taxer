@@ -44,7 +44,10 @@ module.exports = {
                 }
             ],
             "taxes" : [
-                {}
+                {
+                    "type": "gas",
+
+                }
             ]
         }
     }

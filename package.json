@@ -7,8 +7,10 @@
     "test": "tests"
   },
   "dependencies": {
+    "body-parser": "^1.17.1",
     "express": "^4.15.2",
     "mongodb": "^2.2.24",
+    "morgan": "^1.8.1",
     "node-inspector": "^0.12.10"
   },
   "devDependencies": {

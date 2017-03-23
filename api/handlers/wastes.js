@@ -5,11 +5,12 @@
 
 //todo: git push -u
 let storage = require('./../storage');
+let bodyParser = require('body-parser');
 
 module.exports = {
 
     GET:function(req, res,  next) {
-        res.json(storage.users.data.wastes)
+        res.json(storage.users.data.wastes);
     },
 
     getByType: function(req, res, next) {
@@ -36,9 +37,21 @@ module.exports = {
         });
     },
 
-    post: function(req, res, next){
-        //todo: check if key existing in array
+    post: function (req, res, next){
+        let options = ['type', 'value', 'date', 'payed', 'rate'];
+        if (!req.body) return res.sendStatus(400);
+        for (let key in req.body){
+            if (options.indexOf(key) >= 0){
+                    storage.users.data.wastes[req.params.n][key] = req.body[key];
+            }
+        };
+        res.send({
+            code: '200',
+            message: 'ok'
+        });
     },
+
+
 
     delete: function (req, res, next) {
         let indexForDelete = parseInt(req.params.id);
@@ -46,7 +59,6 @@ module.exports = {
         if (Number.isInteger(indexForDelete) &&
             (indexForDelete < wastesLength) &&
             (indexForDelete >= 0)){
-            // todo: slice is not workink
             console.log('index:' + indexForDelete);
             storage.users.data.wastes.splice(indexForDelete,1);
             res.send({
