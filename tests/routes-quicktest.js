@@ -3,10 +3,15 @@
 const config = require('./../api/configs/app');
 config.environment = 'test';
 
-const routes = require('./../api/routes');
+const _routes = require('./../api/routes');
 const app = require('./../api/server');
 const request = require('supertest');
 const assert = require('assert');
+
+// reducing all routes into a flat list
+let routes = {};
+for (let r in _routes)
+	routes = Object.assign(routes, _routes[r]);
 
 describe('Routes validity', () => {
 
