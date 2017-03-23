@@ -15,7 +15,7 @@ const routes = require('./routes.js').testRoutes;
 logger.token('id', function getId (req) {
     return req.id;
 });
-app.use(logger(':id :method :url :response-time :date[web]'));;
+app.use(logger(':id :method :url :status :response-time :date[web]'));;
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))

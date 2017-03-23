@@ -18,7 +18,9 @@ module.exports = {
     },
 
     put: function (req, res, next) {
-        //коли додавать у пайментс, додати пайд і рате
+        let time = new Date().toISOString();
+
+        res.send(time);
     }
 
 };
