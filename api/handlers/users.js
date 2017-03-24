@@ -21,7 +21,10 @@ module.exports = {
                 storage.users.profile[key] = req.body[key];
             }
         };
-        res.send('ok');
+        res.send({
+            message: 'ok',
+            code: 200
+        });
     },
 
 
@@ -33,6 +36,9 @@ module.exports = {
                 storage.users.meta[key] = req.body[key];
             }
         }
-        res.send('ok');
+        res.send({
+            message: 'ok',
+            code: 200
+        });
     }
 }

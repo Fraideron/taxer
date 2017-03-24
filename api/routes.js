@@ -21,7 +21,7 @@ module.exports = {
         'get /taxes': handler('taxes').GET,
         'put /taxes': handler('taxes').put,
         'post /taxes/:type': handler('taxes').post,
-        'delete /taxes/:type': handler('taxes').delete,
+        'delete /taxes/:index': handler('taxes').delete,
         'get /payments': handler('payments').GET,
         'get /payments/:type': handler('payments').getByType,
         'put /payments/:type': handler('payments').put
@@ -29,9 +29,7 @@ module.exports = {
 
     testRoutes:{
         'get /user': handler('users').GET,
-        'get /user/profile': handler('users').getUserProfile,
         'post /user/profile': handler('users').postUserProfile,
-        'get /user/meta': handler('users').getUserMeta,
         'post /user/meta': handler('users').postUserMeta,
         'get /wastes': handler('wastes').GET,
         'get /wastes/:type': handler('wastes').getByType,
@@ -40,12 +38,11 @@ module.exports = {
         'delete /wastes/:id': handler('wastes').delete,
         'get /taxes': handler('taxes').GET,
         'put /taxes': handler('taxes').put,
-        'post /taxes/:type': handler('taxes').post,
-        'delete /taxes/:type': handler('taxes').delete,
+        'post /taxes/:name': handler('taxes').post,
+        'delete /taxes/:index': handler('taxes').delete,
         'get /payments': handler('payments').GET,
         'get /payments/:type': handler('payments').getByType,
-        'put /payments/': handler('payments').put
-
+        'put /payments/' : handler('payments').put
     }
 };
 

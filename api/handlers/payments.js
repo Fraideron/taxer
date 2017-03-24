@@ -25,10 +25,11 @@ module.exports = {
                 req.body
             ]
         });
+
         res.send({
-            message:'ok',
-            code:'200'
-        });
+            message: 'ok',
+            code: 200
+        })
     }
 
 };

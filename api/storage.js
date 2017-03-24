@@ -53,9 +53,13 @@ module.exports = {
             ],
             "taxes" : [
                 {
-                    "type": "gas",
-
-                }
+                    "name": "gas",
+                    "type": "rate"
+                },
+                {
+                    "name": "oil",
+                    "type": "rate"
+                },
             ]
         }
     }
