@@ -10,9 +10,9 @@ const handler = name => {
 // -------------------------------------------------------------------- handlers list
 module.exports = {
     productRoutes: {
-        'get /user': null,
-        'get /user/profile': null,
-        'get /user/meta': null,
+        'get /user': handler('users').GET,
+        'post /user/profile': handler('users').postUserProfile,
+        'post /user/meta': handler('users').postUserMeta,
         'get /wastes': handler('wastes').GET,
         'get /wastes/:type': handler('wastes').getByType,
         'put /wastes': handler('wastes').put,
@@ -28,6 +28,11 @@ module.exports = {
     },
 
     testRoutes:{
+        'get /user': handler('users').GET,
+        'get /user/profile': handler('users').getUserProfile,
+        'post /user/profile': handler('users').postUserProfile,
+        'get /user/meta': handler('users').getUserMeta,
+        'post /user/meta': handler('users').postUserMeta,
         'get /wastes': handler('wastes').GET,
         'get /wastes/:type': handler('wastes').getByType,
         'put /wastes': handler('wastes').put,

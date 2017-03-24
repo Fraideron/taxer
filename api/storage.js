@@ -4,7 +4,15 @@
 module.exports = {
     users: {
         "_id" : 'ObjectId("58b5b9b1c3bdb025cf8c4d06")',
-        "login" : [],
+        "meta" : {
+            "login": "fraid",
+            "password": "testtest",
+            "hash": "hashhash"
+        },
+        "profile":{
+            "name": "Valeriy Demidov",
+            "birth": "20-12-1986"
+        },
         "data" : {
             "payments" : [
                 {
