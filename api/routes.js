@@ -1,14 +1,4 @@
 'use strict';
-
-/**
- * No real need to create such a complicated structure with modules for such a small project.
- * simply `roures.js` + `handlers` folder inside `api` would be enought.
- * P.S. This structure is nasty and I will not use it even in Evolution, just a failed experiment
- * (remove afret read this)
- * --
- * Karponter
- */
-
 // -------------------------------------------------------------------- handlers importing wrapper
 const _routesDir = 'handlers';
 // @todo: fraideron, check if you understand what is going on
@@ -20,6 +10,9 @@ const handler = name => {
 // -------------------------------------------------------------------- handlers list
 module.exports = {
     productRoutes: {
+        'get /user': null,
+        'get /user/profile': null,
+        'get /user/meta': null,
         'get /wastes': handler('wastes').GET,
         'get /wastes/:type': handler('wastes').getByType,
         'put /wastes': handler('wastes').put,
