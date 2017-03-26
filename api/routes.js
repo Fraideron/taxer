@@ -24,7 +24,7 @@ module.exports = {
         'delete /taxes/:index': handler('taxes').delete,
         'get /payments': handler('payments').GET,
         'get /payments/:type': handler('payments').getByType,
-        'put /payments/:type': handler('payments').put
+        'put /payments/': handler('payments').put
     },
 
     testRoutes:{
