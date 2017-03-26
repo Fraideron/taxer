@@ -21,7 +21,8 @@ if(appConfigs.environment === 'prod'){
     routes = require('./routes.js').productRoutes;
 } else if (appConfigs.environment === 'test'){
     routes = require('./routes.js').productRoutes;
-    routes += require('./routes.js').testRoutes;
+    let temp = require('./routes.js').testRoutes;
+    Object.assign(routes, temp);
 }
 
 
