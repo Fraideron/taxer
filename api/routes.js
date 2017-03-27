@@ -12,7 +12,7 @@ const handler = name => {
 
 // -------------------------------------------------------------------- handlers list
 module.exports = {
-    productRoutes: {
+    api: {
         'get /user': handler('users').GET,
         'post /user/profile': handler('users').postUserProfile,
         'post /user/meta': handler('users').postUserMeta,
@@ -30,12 +30,10 @@ module.exports = {
         'put /payments/': handler('payments').put
     },
 
-    testRoutes: {
+    test: {
         'get /error': (req, res) => {
             throw new Error();
+
         }
     }
 };
-
-//функція яка приймає префікс і повертає строчку урли
-
