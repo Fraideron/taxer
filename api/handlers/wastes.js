@@ -10,11 +10,11 @@ let bodyParser = require('body-parser');
 module.exports = {
 
     GET:function(req, res,  next) {
-        res.json(storage.users.data.wastes);
+        res.json(storage.users[0].data.wastes);
     },
 
     getByType: function(req, res, next) {
-        let wastes = storage.users.data.wastes;
+        let wastes = storage.users[0].data.wastes;
         var result = wastes.filter(function (value) {
                 return (value.type === req.params.type);
             }
@@ -30,7 +30,7 @@ module.exports = {
                 "payed" : 40,
                 "rate" : 4
         };
-        storage.users.data.wastes.push(dataForInsert);
+        storage.users[0].data.wastes.push(dataForInsert);
         res.send({
             message: 'All is OK, the waste is added',
             code: 200
@@ -42,7 +42,7 @@ module.exports = {
         if (!req.body) return res.sendStatus(400);
         for (let key in req.body){
             if (options.indexOf(key) >= 0){
-                    storage.users.data.wastes[req.params.n][key] = req.body[key];
+                    storage.users[0].data.wastes[req.params.n][key] = req.body[key];
             }
         };
         res.send({
@@ -55,12 +55,12 @@ module.exports = {
 
     delete: function (req, res, next) {
         let indexForDelete = parseInt(req.params.id);
-        let wastesLength = storage.users.data.wastes.length;
+        let wastesLength = storage.users[0].data.wastes.length;
         if (Number.isInteger(indexForDelete) &&
             (indexForDelete < wastesLength) &&
             (indexForDelete >= 0)){
             console.log('index:' + indexForDelete);
-            storage.users.data.wastes.splice(indexForDelete,1);
+            storage.users[0].data.wastes.splice(indexForDelete,1);
             res.send({
                 message: 'All is OK, the waste is deleted',
                 code: 200

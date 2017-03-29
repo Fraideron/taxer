@@ -5,12 +5,12 @@
 let storage = require('./../storage');
 module.exports = {
     GET: function (req, res, next) {
-        res.json(storage.users.data.payments);
+        res.json(storage.users[0].data.payments);
     },
 
     getByType: function (req, res, next) {
         let filter = req.params.type;
-        let payments = storage.users.data.payments[0].bill;
+        let payments = storage.users[0].data.payments[0].bill;
         let result = payments.filter(function (element) {
             return(element.type === filter);
         })
@@ -19,7 +19,7 @@ module.exports = {
 
     put: function (req, res, next) {
         let time = new Date().toISOString();
-        storage.users.data.payments.push({
+        storage.users[0].data.payments.push({
             date: time,
             bill:[
                 req.body

@@ -6,8 +6,8 @@ let storage = require('./../storage');
 module.exports = {
     GET: function (req, res, next) {
         res.json({
-            profile: storage.users.profile,
-            meta: storage.users.meta
+            profile: storage.users[0].profile,
+            meta: storage.users[0].meta
         });
     },
 
@@ -18,7 +18,7 @@ module.exports = {
         if (!req.body) return res.sendStatus(400);
         for (let key in req.body){
             if (options.indexOf(key) >= 0){
-                storage.users.profile[key] = req.body[key];
+                storage.users[0].profile[key] = req.body[key];
             }
         };
         res.send({
@@ -33,7 +33,7 @@ module.exports = {
         if (!req.body) return res.sendStatus(400);
         for (let key in req.body){
             if (options.indexOf(key) >= 0){
-                storage.users.meta[key] = req.body[key];
+                storage.users[0].meta[key] = req.body[key];
             }
         }
         res.send({
