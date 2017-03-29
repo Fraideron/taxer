@@ -6,7 +6,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const appConfigs = require('./configs/app');
 const routes = require('./routes').api;
-
+makeUrlWitnEnviroment('api', require('./routes').api);
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -26,17 +26,18 @@ function makeUrlWitnEnviroment(prefix, routes) {
 
 
 let typeEnviroment = appConfigs.environment;
-if(typeEnviroment === 'test') {
+if(typeEnviroment == 'test') {
     makeUrlWitnEnviroment(typeEnviroment, require('./routes').test);
-    makeUrlWitnEnviroment('api', require('./routes').api);
 } else {
     let logger = require('morgan');
     logger.token('id', function getId(req) {
         return req.id;
     });
     app.use(logger(':id :method :url :status :response-time :date[web]'));
-    makeUrlWitnEnviroment('api', require('./routes').api);
 }
+
+
+
 
 //uncought errors handler
 app.use(function(err, req, res, next) {
@@ -46,4 +47,3 @@ app.use(function(err, req, res, next) {
 
 
 module.exports = app;
-
