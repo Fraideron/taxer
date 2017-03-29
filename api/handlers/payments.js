@@ -2,7 +2,9 @@
  * Created by valeriy on 03.03.17.
  */
 'use strict';
-let storage = require('./../storage');
+const storage = require('./../storage');
+const paymentPutHelper = require('./../components/paymentsPutHelper')
+
 module.exports = {
     GET: function (req, res, next) {
         res.json(storage.users[0].data.payments);
@@ -25,6 +27,15 @@ module.exports = {
                 req.body
             ]
         });
+
+        let paymentForWastes = paymentPutHelper.scatterPayment(paymentPutHelper.getUnpayed('gas'),
+            paymentPutHelper.calcTotalWaste(paymentPutHelper.getUnpayed('gas')));
+        let unpayedWastes = paymentPutHelper.getUnpayed('gas');
+
+        unpayedWastes.forEach(function (unpWaste, index, array) {
+           unpWaste[index]['payment'] = paymentForWastes[index].payment
+        });
+
 
         res.send({
             message: 'ok',

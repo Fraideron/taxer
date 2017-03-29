@@ -6,7 +6,7 @@ const storage = require('./../storage');
 
 
 function getUnpayed(type) {
-    let wastes = storage.users.data.wastes;
+    let wastes = storage.users[0].data.wastes;
     let wastesByType = [];
 
     
@@ -25,10 +25,10 @@ function compareDateSorting(wast1, wast2) {
 }
 
 function isUnpayed (waste) {
-    if(!waste.rate){
-        return true;
-    } else {
+    if(waste.rate !== undefined){
         return false;
+    } else {
+        return true;
     }
 }
 
@@ -69,5 +69,6 @@ function scatterPayment(wastes, pymnt) {
     return rezPayments;
 }
 
+module.exports = { getUnpayed, calcTotalWaste, scatterPayment };
 
-console.log(scatterPayment(getUnpayed('gas'), calcTotalWaste(getUnpayed('gas'))));
+//console.log(scatterPayment(getUnpayed('gas'), calcTotalWaste(getUnpayed('gas'))));

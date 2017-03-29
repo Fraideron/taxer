@@ -35,14 +35,14 @@ module.exports = {
                     {
                         "type": "gas",
                         "value": 0,
-                        "date": "2017-02-18"
+                        "date": "2017-02-18",
+                        "payed": 0,
+                        "rate":0
                     },
                     {
                         "type": "gas",
                         "value": 60,
-                        "date": "2017-03-18",
-                        "payed": 40,
-                        "rate": 5
+                        "date": "2017-03-18"
                     },
                     {
                         "type": "gas",
@@ -53,9 +53,7 @@ module.exports = {
                     {
                         "type": "gas",
                         "value": 205,
-                        "date": "2017-05-18",
-                        "payed": 5,
-                        "rate": 5
+                        "date": "2017-05-18"
                     },
                     {
                         "type": "gas",
@@ -151,34 +149,31 @@ module.exports = {
                 "wastes" : [
                     {
                         "type" : "gas",
-                        "value" : 0,
-                        "date" : "2017-02-18"
+                        "value" : 20,
+                        "date" : "2017-02-18",
+                        "payed": 0,
+                        "rate": 0
                     },
                     {
                         "type" : "gas",
                         "value" : 60,
-                        "date" : "2017-03-18",
-                        "payed" : 40,
-                        "rate" : 5
+                        "date" : "2017-03-18"
                     },
                     {
                         "type" : "gas",
                         "value" : 145,
                         "date" : "2017-04-18",
-
                     },
                     {
                         "type" : "gas",
                         "value" : 205,
-                        "date" : "2017-05-18",
-                        "payed" : 5,
-                        "rate" : 5
+                        "date" : "2017-05-18"
+
                     },
                     {
                         "type" : "gas",
                         "value" : 280,
-                        "date" : "2017-06-18",
-
+                        "date" : "2017-06-18"
                     },
                     {
                         "type" : "oil",
@@ -188,16 +183,12 @@ module.exports = {
                     {
                         "type" : "oil",
                         "value" : 90,
-                        "date" : "2017-03-18",
-                        "payed" : 25,
-                        "rate" : 10
+                        "date" : "2017-03-18"
                     },
                     {
                         "type" : "oil",
                         "value" : 125,
-                        "date" : "2017-03-18",
-                        "payed" : 50,
-                        "rate" : 10
+                        "date" : "2017-03-18"
                     },
                     {
                         "type" : "electric",
