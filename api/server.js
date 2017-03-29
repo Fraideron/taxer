@@ -5,8 +5,8 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const appConfigs = require('./configs/app');
-const routes = require('./routes');
-
+const routes = require('./routes').api;
+makeUrlWitnEnviroment();
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -14,9 +14,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 
-let typeEnviroment = appConfigs.environment;
-
-function makeUrlWitnEnviroment(enviromentType, routes) {
+function makeUrlWitnEnviroment(prefix, routes) {
     for(let route in routes){
         const parsUrl = parseUrl(enviromentType, route);
         console.log(`Method: ${parseUrl(enviromentType, route).method} URL:${parseUrl(enviromentType, route).url} `);
@@ -24,19 +22,18 @@ function makeUrlWitnEnviroment(enviromentType, routes) {
     }
 }
 
-if(typeEnviroment == 'test') {
+
+
+
+let typeEnviroment = appConfigs.environment;
+if(typeEnviroment === 'test') {
+    makeUrlWitnEnviroment(typeEnviroment, require('./routes').test);
+} else {
     let logger = require('morgan');
     logger.token('id', function getId(req) {
         return req.id;
     });
     app.use(logger(':id :method :url :status :response-time :date[web]'));
-
-    for(let keyTypeProd in routes){
-        console.log(keyTypeProd);
-        makeUrlWitnEnviroment(keyTypeProd, routes[keyTypeProd]);
-    }
-} else {
-    //todo: else variants with enviroments
 }
 
 
