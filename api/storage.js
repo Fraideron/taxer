@@ -33,32 +33,90 @@ module.exports = {
             "wastes" : [
                 {
                     "type" : "gas",
-                    "value" : 123,
+                    "value" : 0,
                     "date" : "2017-02-18"
                 },
                 {
-                    "type" : "oil",
-                    "value" : 133,
+                    "type" : "gas",
+                    "value" : 60,
                     "date" : "2017-03-18",
                     "payed" : 40,
-                    "rate" : 4
+                    "rate" : 5
+                },
+                {
+                    "type" : "gas",
+                    "value" : 145,
+                    "date" : "2017-04-18",
+
+                },
+                {
+                    "type" : "gas",
+                    "value" : 205,
+                    "date" : "2017-05-18",
+                    "payed" : 5,
+                    "rate" : 5
+                },
+                {
+                    "type" : "gas",
+                    "value" : 280,
+                    "date" : "2017-06-18",
+
+                },
+                {
+                    "type" : "oil",
+                    "value" : 50,
+                    "date" : "2017-07-18",
+                },
+                {
+                    "type" : "oil",
+                    "value" : 90,
+                    "date" : "2017-03-18",
+                    "payed" : 25,
+                    "rate" : 10
+                },
+                {
+                    "type" : "oil",
+                    "value" : 125,
+                    "date" : "2017-03-18",
+                    "payed" : 50,
+                    "rate" : 10
                 },
                 {
                     "type" : "electric",
                     "value" : 143,
                     "date" : "2017-04-18",
-                    "payed" : 0,
-                    "rate" : 0
+
+                },
+                {
+                    "type" : "electric",
+                    "value" : 210,
+                    "date" : "2017-03-18",
+                    "payed" : 50,
+                    "rate" : 10
+                },
+                {
+                    "type" : "electric",
+                    "value" : 285,
+                    "date" : "2017-03-18",
+                    "payed" : 100,
+                    "rate" : 10
                 }
             ],
             "taxes" : [
                 {
                     "name": "gas",
-                    "type": "rate"
+                    "type": "rate",
+                    "amount": 10
+                },
+                {
+                    "name": "electric",
+                    "type": "rate",
+                    "amount": 5
                 },
                 {
                     "name": "oil",
-                    "type": "rate"
+                    "type": "rate",
+                    "amount": 25
                 },
             ]
         }
