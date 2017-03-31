@@ -1,17 +1,18 @@
-/**
- * Created by valeriy on 03.03.17.
- */
+
 'use strict';
 let storage = require('./../storage');
+const bunyan = require('bunyan');
+const log = bunyan.createLogger({name: 'Taxes'});
 
 module.exports={
     GET: function (req, res, next) {
+        log.info('GET request from taxes handler');
         res.json(storage.users[0].data.taxes);
     },
 
     put: function (req, res, next) {
         storage.users[0].data.taxes.push(req.body);
-
+        log.info('PUT request from taxes handler');
         res.send({
             message: 'ok',
             code: 200
@@ -19,6 +20,7 @@ module.exports={
     },
 
     post: function (req, res, next) {
+        log.info('POST request from taxes handler');
         let options = ['name', 'type'];
         if (!req.body) return res.sendStatus(400);
         for (let key in req.body){
@@ -40,6 +42,7 @@ module.exports={
     },
 
     delete: function (req, res, next) {
+        log.info('DELETE request from taxes handler');
         let indexForDelete = parseInt(req.params.index);
         let taxesLength = storage.users[0].data.taxes.length;
         if (Number.isInteger(indexForDelete) &&

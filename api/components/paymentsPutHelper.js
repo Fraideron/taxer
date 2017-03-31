@@ -1,72 +1,59 @@
-/**
- * Created by valeriy on 27.03.17.
- */
 'use strict';
+
 const storage = require('./../storage');
+const bunyan = require('bunyan');
+const log = bunyan.createLogger({name: 'PaymentHelper'});
 
+const getAllWastes = type =>
+    storage.users[0].data.wastes;
 
-function getUnpayed(type) {
-    let wastes = storage.users[0].data.wastes;
-    let wastesByType = [];
+const compareDateSorting = (wast1, wast2) =>
+    wast2.date < wast1.date;
 
-    
-    for(let waste in wastes) {
-        if (wastes[waste].type === type) {
-            wastesByType.push(wastes[waste]);
-        }
-    }
-    let unpayedWastes = wastesByType.filter(isUnpayed);
-    unpayedWastes.sort(compareDateSorting);
-    return unpayedWastes;
+const checkWasteType = (type, waste) =>
+    waste.type === type; 
+
+const isUnpayed = waste =>
+    waste.rate === undefined;
+
+const getWastesDiff = (waste2, waste1) =>
+    waste2.value - waste1.value;
+
+const getUnpayed = type => {
+    log.info('Select unpayed wastes in paymentPutHelper component');
+    const _typeFilter = checkWasteType.bind(null, type);
+    return getAllWastes()
+        .filter(_typeFilter)
+        .filter(isUnpayed)
+        .sort(compareDateSorting);
 }
 
-function compareDateSorting(wast1, wast2) {
-    return wast2.date < wast1.date;
+const calcTotalWaste = wastesChain => {   
+    log.info('Calculate total wastes values different in paymentPutHelper component');
+    return wastesChain.reduce((acc, element, index, array) => {
+        if (!index)
+            return 0;
+        return acc + getWastesDiff(element, array[index-1]);
+    });
 }
 
-function isUnpayed (waste) {
-    if(waste.rate !== undefined){
-        return false;
-    } else {
-        return true;
-    }
-}
-
-function calcTotalWaste(wastesChain) {
-    let totalUnpayedWasteValue = 0;
-    for(let waste in wastesChain){
-        let prev = 0;
-        if (waste > 1){
-            prev++
-        }
-        let diff = wastesChain[waste].value - wastesChain[prev].value;
-        totalUnpayedWasteValue += diff;
-    }
-    return totalUnpayedWasteValue;
-}
-
-function getWastesDiff(waste1, waste2) {
-    return (waste2.value - waste1.value);
-}
-
-function scatterPayment(wastes, pymnt) {
-    let number = 0;
-    let rezPayments = [];
-    wastes.forEach(function (element, index, array){
-        let prev = 0;
-        if(index > 1){prev++};
-        let differ = getWastesDiff(wastes[prev], wastes[index]);
-        let percnt = differ/calcTotalWaste(getUnpayed('gas'));
-        rezPayments.push({
-            number: number++,
-            waste: element,
+function scatterPayment(wastes, payment) {
+    log.info('Scatter payment in paymentPutHelper component');
+    const res = [];
+    const totalWaste = calcTotalWaste(wastes);
+    wastes.forEach(function (waste, index, array) {
+        if (!index) return;
+        const diff = getWastesDiff(waste, array[index-1]);
+        const percent = diff / totalWaste;
+        res.push({
+            number: index,
+            waste: waste,
             diff: differ,
-            percent: percnt,
-            payment: percnt * pymnt
+            percent: percent,
+            payment: percent * payment
         })
     });
-    rezPayments.shift();
-    return rezPayments;
+    return res;
 }
 
 module.exports = { getUnpayed, calcTotalWaste, scatterPayment };

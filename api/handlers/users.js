@@ -1,10 +1,11 @@
-/**
- * Created by valeriy on 23.03.17.
- */
 'use strict';
-let storage = require('./../storage');
+const storage = require('./../storage');
+const bunyan = require('bunyan');
+const log = bunyan.createLogger({name: 'Users'});
+
 module.exports = {
     GET: function (req, res, next) {
+        log.info('GET request from users handler');
         res.json({
             profile: storage.users[0].profile,
             meta: storage.users[0].meta
@@ -21,6 +22,7 @@ module.exports = {
                 storage.users[0].profile[key] = req.body[key];
             }
         };
+        log.info('postUserProfile request from users handler');
         res.send({
             message: 'ok',
             code: 200
@@ -36,6 +38,7 @@ module.exports = {
                 storage.users[0].meta[key] = req.body[key];
             }
         }
+        log.info('postUserMeta request from users handler');
         res.send({
             message: 'ok',
             code: 200

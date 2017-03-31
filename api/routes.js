@@ -2,7 +2,6 @@
 // -------------------------------------------------------------------- handlers importing wrapper
 
 const _routesDir = 'handlers';
-// @todo: fraideron, check if you understand what is going on
 const handler = name => {
     const path = `./${_routesDir}/${name}`;
     return require(path);
@@ -33,7 +32,6 @@ module.exports = {
     test: {
         'get /error': (req, res) => {
             throw new Error();
-
         }
     }
 };
