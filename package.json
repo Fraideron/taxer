@@ -10,7 +10,7 @@
     "body-parser": "^1.17.1",
     "bunyan": "^1.8.9",
     "express": "^4.15.2",
-    "mongodb": "^2.2.24",
+    "mongodb": "^2.2.25",
     "morgan": "^1.8.1"
   },
   "devDependencies": {

@@ -1,5 +1,5 @@
 'use strict';
-const storage = require('./../storage');
+const MongoClient = require('./../mongoClient');
 const bunyan = require('bunyan');
 const log = bunyan.createLogger({name: 'Users'});
 
