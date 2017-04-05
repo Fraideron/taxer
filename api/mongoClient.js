@@ -6,6 +6,6 @@ MongoClient.connect("mongodb://localhost:27017/taxer", function(err, db) {
     if(!err) {
         console.log("We are connected to mongodb");
     }
+    module.exports = db;
 });
 
-module.exports = MongoClient;

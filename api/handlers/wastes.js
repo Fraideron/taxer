@@ -1,6 +1,6 @@
 'use strict';
 
-let MongoClient = require('./../mongoClient');
+let db = require('./../mongoClient');
 let bodyParser = require('body-parser');
 const bunyan = require('bunyan');
 const log = bunyan.createLogger({name: 'Wastes'});
