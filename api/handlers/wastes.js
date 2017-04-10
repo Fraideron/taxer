@@ -25,46 +25,21 @@ module.exports = {
             assert.equal(err, null);
             res.send("Inserted a document into the wastes collection.");
         });
-
     },
 
     post: function (req, res, next){
-        const options = ['type', 'value', 'date', 'payed', 'rate'];
-        if (!req.body) return res.sendStatus(400);
-        for (let key in req.body){
-            if (options.indexOf(key) >= 0){
-                storage.users[0].data.wastes[req.params.n][key] = req.body[key];
-            }
-        };
-        log.info('POST request from wastes handler');
-        res.send({
-            code: '200',
-            message: 'ok'
-        });
+        req.model.wastes.updateDocuments();
     },
 
 
 
     delete: function (req, res, next) {
-        let indexForDelete = parseInt(req.params.id);
-        let wastesLength = storage.users[0].data.wastes.length;
-        if (Number.isInteger(indexForDelete) &&
-            (indexForDelete < wastesLength) &&
-            (indexForDelete >= 0)){
-            console.log('index:' + indexForDelete);
-            storage.users[0].data.wastes.splice(indexForDelete,1);
-            log.info('DELETE request from wastes handler');
-            res.send({
-                message: 'All is OK, the waste is deleted',
-                code: 200
-            })
-        } else {
-            log.warn('DELETE request is bad from wastes handler');
-            res.send({
-                message: 'Request is bad',
-                code: 500
-            })
+        req.model.wastes.remove(
+            {_id: new mongodb.ObjectID( req.body) },
+            function (err, result){
+                //check result to see how many document are deleted
+            });
+
         }
-    }
 
 };
