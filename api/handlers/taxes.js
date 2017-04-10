@@ -1,6 +1,5 @@
 
 'use strict';
-let db = require('./../mongoClient');
 const bunyan = require('bunyan');
 const log = bunyan.createLogger({name: 'Taxes'});
 

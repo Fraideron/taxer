@@ -1,42 +1,31 @@
 'use strict';
-
-let db = require('./../mongoClient');
-let bodyParser = require('body-parser');
 const bunyan = require('bunyan');
 const log = bunyan.createLogger({name: 'Wastes'});
-
+const db = require('./../server');
+const assert = require('assert');
 
 module.exports = {
 
-    GET:function(req, res,  next) {
-        log.info('GET request from wastes handler');
-        res.json(storage.users[0].data.wastes);
+    GET:function(req, res,  next){
+        req.model.wastes.find({}).toArray(function(err, items) {
+            assert.equal(null, err);
+            res.send(items);
+        });
     },
 
     getByType: function(req, res, next) {
-        let wastes = storage.users[0].data.wastes;
-        var result = wastes.filter(function (value) {
-                return (value.type === req.params.type);
-            }
-        );
-        log.info('getByType request from wastes handler');
-        res.json(result);
+        req.model.wastes.find({"type": req.params.type}).toArray(function(err, items) {
+            assert.equal(null, err);
+            res.send(items);
+        });
     },
 
     put: function(req, res, next){
-        let dataForInsert = {
-                "type" : "oil",
-                "value" : 133,
-                "date" : "2017-03-18",
-                "payed" : 40,
-                "rate" : 4
-        };
-        storage.users[0].data.wastes.push(dataForInsert);
-        log.info('PUT request from wastes handler');
-        res.send({
-            message: 'All is OK, the waste is added',
-            code: 200
+        req.model.wastes.insertOne(req.body, function (err, result) {
+            assert.equal(err, null);
+            res.send("Inserted a document into the wastes collection.");
         });
+
     },
 
     post: function (req, res, next){
@@ -44,7 +33,7 @@ module.exports = {
         if (!req.body) return res.sendStatus(400);
         for (let key in req.body){
             if (options.indexOf(key) >= 0){
-                    storage.users[0].data.wastes[req.params.n][key] = req.body[key];
+                storage.users[0].data.wastes[req.params.n][key] = req.body[key];
             }
         };
         log.info('POST request from wastes handler');

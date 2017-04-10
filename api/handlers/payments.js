@@ -1,6 +1,5 @@
 
 'use strict';
-const db = require('./../mongoClient');
 const paymentPutHelper = require('./../components/paymentsPutHelper')
 const bunyan = require('bunyan');
 const log = bunyan.createLogger({name: 'Payments'});
