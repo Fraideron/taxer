@@ -1,7 +1,7 @@
 'use strict';
 const bunyan = require('bunyan');
 const log = bunyan.createLogger({name: 'Wastes'});
-const db = require('./../server');
+const mongodb = require('mongodb');
 const assert = require('assert');
 
 module.exports = {
@@ -35,11 +35,11 @@ module.exports = {
 
     delete: function (req, res, next) {
         req.model.wastes.remove(
-            {_id: new mongodb.ObjectID( req.body) },
+            {_id: new mongodb.ObjectID(req.params.id) },
             function (err, result){
-                //check result to see how many document are deleted
+                assert.equal(err, null);
+                res.send('document is deleted');
             });
-
         }
 
 };
