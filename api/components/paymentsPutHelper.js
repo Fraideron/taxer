@@ -11,7 +11,7 @@ const compareDateSorting = (wast1, wast2) =>
     wast2.date < wast1.date;
 
 const checkWasteType = (type, waste) =>
-    waste.type === type; 
+    waste.type === type;
 
 const isUnpayed = waste =>
     waste.rate === undefined;

@@ -1,13 +1,10 @@
 'use strict';
 // -------------------------------------------------------------------- handlers importing wrapper
-
 const _routesDir = 'handlers';
 const handler = name => {
     const path = `./${_routesDir}/${name}`;
     return require(path);
 };
-
-
 
 // -------------------------------------------------------------------- handlers list
 module.exports = {
