@@ -6,7 +6,7 @@ const assert = require('assert');
 
 module.exports={
     GET: function (req, res, next) {
-        req.model.users.find(
+        req.model.users.update(
             {_id: new mongodb.ObjectID(req.user)},
             {'data.taxes':1}).toArray(function(err, items) {
             assert.equal(null, err);
@@ -16,12 +16,13 @@ module.exports={
     },
 
     put: function (req, res, next) {
-        storage.users[0].data.taxes.push(req.body);
-        log.info('PUT request from taxes handler');
-        res.send({
-            message: 'ok',
-            code: 200
-        })
+        req.model.users.update(
+            {_id: new mongodb.ObjectID(req.user)},
+            {$push:{'data.taxes': req.body}}, function (err, result) {
+                assert.equal(null, err);
+                res.send('Iserted document with _id: ' + result);
+            });
+        //todo: add inserted _id
     },
 
     post: function (req, res, next) {
