@@ -28,9 +28,16 @@ module.exports = {
     },
 
     post: function (req, res, next){
-        req.model.wastes.updateDocuments(
-            //todo: update wastes document
+        req.model.wastes.update(
+            {_id: new mongodb.ObjectID(req.params.id)},
+            {$set: req.body},
+            {},
+            function (err, result) {
+                assert.equal(err, null);
+                log.info(`Document with _id ${req.params.id} is updated`);
+            }
         );
+        res.send(`Document with _id ${req.params.id} is updated`)
     },
 
     
