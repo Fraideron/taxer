@@ -1,6 +1,6 @@
 {
   "name": "taxer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "api/app.js",
   "directories": {
@@ -23,8 +23,8 @@
     "type": "git",
     "url": "git+https://github.com/Fraideron/taxer.git"
   },
-  "author": "Valeriy Demidov & Vlad Dotsenko",
-  "license": "ISC",
+  "authors": ["Valeriy Demidov", "Vlad Dotsenko"],
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/Fraideron/taxer/issues"
   },
