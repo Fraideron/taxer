@@ -1,12 +1,18 @@
-
 'use strict';
 const bunyan = require('bunyan');
 const log = bunyan.createLogger({name: 'Taxes'});
+const mongodb = require('mongodb');
+const assert = require('assert');
 
 module.exports={
     GET: function (req, res, next) {
+        req.model.users.find(
+            {_id: new mongodb.ObjectID(req.user)},
+            {'data.taxes':1}).toArray(function(err, items) {
+            assert.equal(null, err);
+            res.send(items);
+        });
         log.info('GET request from taxes handler');
-        res.json(storage.users[0].data.taxes);
     },
 
     put: function (req, res, next) {
