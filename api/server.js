@@ -34,6 +34,13 @@ app.use(function (req, res, next) {
     next();
 });
 
+//middleware for hardcoded user
+app.use(function (req, res, next) {
+    req.user = '58ecae18ae45e78a80a47898';
+    next();
+});
+
+
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));

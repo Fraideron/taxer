@@ -23,23 +23,35 @@ module.exports = {
     put: function(req, res, next){
         req.model.wastes.insertOne(req.body, function (err, result) {
             assert.equal(err, null);
-            res.send("Inserted a document into the wastes collection.");
+            res.send('Iserted document with _id: ' + result["ops"][0]["_id"]);
         });
     },
 
     post: function (req, res, next){
-        req.model.wastes.updateDocuments();
+        req.model.wastes.updateDocuments(
+            //todo: update wastes document
+        );
     },
 
-
-
+    
     delete: function (req, res, next) {
         req.model.wastes.remove(
-            {_id: new mongodb.ObjectID(req.params.id) },
+            {_id: new mongodb.ObjectID(req.params.id)},
             function (err, result){
                 assert.equal(err, null);
-                res.send('document is deleted');
+                log.info('Document removed from wastes collection');
+                console.log(result);
             });
-        }
+
+        req.model.users.update(
+            {_id: new mongodb.ObjectID(req.user)},
+            {$pull:{'data.wastes':{_id: new mongodb.ObjectID(req.params.id)}}},
+            function (err, result){
+                assert.equal(err, null);
+                log.info('Document removed from users collection')
+            });
+        res.send('Document removed with id: ' + req.params.id);
+    }
+
 
 };
