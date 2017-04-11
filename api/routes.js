@@ -7,7 +7,7 @@ const handler = name => {
 };
 
 // -------------------------------------------------------------------- some small handlers
-const errorEmitter = () => void throw new Error();
+const errorEmitter = () => { throw new Error(); };
 const dummy = (x, r) => r.ok();
 
 // -------------------------------------------------------------------- handlers list

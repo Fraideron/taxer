@@ -30,10 +30,21 @@ describe('Routes sanity test', () => {
     const route = formatted.url.replace(/:(.*?)(\/|$)/, '1$2');
     it(`'${formatted.method} ${route}' respond with json`, done => {
       request(app)[formatted.method](route)
-      .set('Accept', 'application/json')
-      .expect('Content-Type', /json/)
-      .expect(200, done);
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(200, done);
     });
+  });
+
+});
+
+describe('Misc', () => {
+
+  it('Uncaught error handling', done => {
+    const url = formatUrl('test', 'get /error').url;
+    console.log(url);
+    request(app).get(url)
+      .expect(500, done);
   });
 
 });

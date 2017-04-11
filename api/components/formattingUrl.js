@@ -14,6 +14,6 @@ module.exports = function (prefix, route) {
   const spl = route.split(' ');
   return {
     method: spl[0],
-    url: `${prefix}/v${ver[0]}${spl[1]}`
+    url: `/${prefix}/v${ver[0]}${spl[1]}`
   }
 }
