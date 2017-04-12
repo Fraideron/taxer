@@ -23,7 +23,6 @@ module.exports = {
     put: function(req, res, next){
         req.model.wastes.insertOne(req.body, function (err, result) {
             assert.equal(err, null);
-            res.send('Iserted document with _id: ' + result["ops"][0]["_id"]);
         });
     },
 
@@ -34,7 +33,6 @@ module.exports = {
             {},
             function (err, result) {
                 assert.equal(err, null);
-                log.info(`Document with _id ${req.params.id} is updated`);
             }
         );
         res.send(`Document with _id ${req.params.id} is updated`)
@@ -46,8 +44,6 @@ module.exports = {
             {_id: new mongodb.ObjectID(req.params.id)},
             function (err, result){
                 assert.equal(err, null);
-                log.info('Document removed from wastes collection');
-                console.log(result);
             });
 
         req.model.users.update(
@@ -55,7 +51,6 @@ module.exports = {
             {$pull:{'data.wastes':{_id: new mongodb.ObjectID(req.params.id)}}},
             function (err, result){
                 assert.equal(err, null);
-                log.info('Document removed from users collection')
             });
         res.send('Document removed with id: ' + req.params.id);
     }

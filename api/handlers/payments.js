@@ -3,11 +3,18 @@
 const paymentPutHelper = require('./../components/paymentsPutHelper')
 const bunyan = require('bunyan');
 const log = bunyan.createLogger({name: 'Payments'});
+const mongodb = require('mongodb');
+const assert = require('assert');
 
 module.exports = {
     GET: function (req, res, next) {
-        res.json(storage.users[0].data.payments);
-        log.info('GET request from payments');
+        req.model.users.find(
+            {_id: new mongodb.ObjectID(req.user)},
+            {'data.payments':1}).toArray(
+            function(err, items) {
+                assert.equal(null, err);
+                res.send(items);
+            });
     },
 
     getByType: function (req, res, next) {
@@ -21,7 +28,7 @@ module.exports = {
         res.json(result);
     },
 
-    put: function (req, res, next) {      
+    put: function (req, res, next) {
         storage.users[0].data.payments.push({
             date:  new Date().toISOString(),
             bill:[
@@ -34,7 +41,7 @@ module.exports = {
         let unpayedWastes = paymentPutHelper.getUnpayed('gas');
 
         unpayedWastes.forEach(function (unpWaste, index, array) {
-           unpWaste[index]['payment'] = paymentForWastes[index].payment
+            unpWaste[index]['payment'] = paymentForWastes[index].payment
         });
         log.info('PUT request from payments');
 

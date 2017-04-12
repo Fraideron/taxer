@@ -27,6 +27,11 @@ MongoClient.connect("mongodb://localhost:27017/taxer", function(err, db) {
     }
 });
 
+app.use((req, res, next)=>{
+    log.info(`${req.method} ${req.originalUrl}`);
+    next();
+});
+
 // Connect to the db
 app.use(function (req, res, next) {
     req.model = model;
@@ -54,10 +59,11 @@ function applyRoutes(prefix, routes) {
 }
 
 applyRoutes('api', require('./routes').api);
-let evironmentType = appConfigs.environment;
-if (evironmentType == 'test') {
+let typeEnviroment = appConfigs.environment;
+if (typeEnviroment == 'test') {
     applyRoutes(typeEnviroment, require('./routes').test);
 }
+
 
 // uncaught errors handler
 app.use(function(err, req, res, next) {
