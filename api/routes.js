@@ -23,7 +23,7 @@ module.exports = {
         'get /taxes': handler('taxes').GET,
         'put /taxes': handler('taxes').put,
         'post /taxes/:type': handler('taxes').post,
-        'delete /taxes/:id': handler('taxes').delete,
+        'delete /taxes': handler('taxes').delete,
         'get /payments': handler('payments').GET,
         'get /payments/:type': handler('payments').getByType,
         'put /payments/': handler('payments').put

@@ -48,23 +48,13 @@ module.exports={
     },
 
     delete: function (req, res, next) {
-        log.info('DELETE request from taxes handler');
-        let indexForDelete = parseInt(req.params.index);
-        let taxesLength = storage.users[0].data.taxes.length;
-        if (Number.isInteger(indexForDelete) &&
-            (indexForDelete < taxesLength) &&
-            (indexForDelete >= 0)){
-            console.log('index:' + indexForDelete);
-            storage.users[0].data.taxes.splice(indexForDelete,1);
-            res.send({
-                message: 'All is OK, the taxes is deleted',
-                code: 200
-            })
-        } else {
-            res.send({
-                message: 'Request is bad',
-                code: 500
-            })
-        }
+        req.model.users.update(
+            {_id: new mongodb.ObjectID(req.user)},
+            {$set:{'data.taxes':{'name':req.body.name}}},
+            function (err, result){
+                assert.equal(err, null);
+                log.info('Document removed from users collection')
+            });
+        res.send('Document removed with id: ' + req.body.name);
     }
 };
