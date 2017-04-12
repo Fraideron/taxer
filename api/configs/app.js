@@ -3,7 +3,8 @@
 // environment resolvation
 module.exports = {
 	// dev/prod/test
-	environment: 'prod',
+	name: 'taxer',
+	environment: 'test',
 	port: 3333,
 	apiPrefix: 'api',
 	version: require('./../../package.json').version
