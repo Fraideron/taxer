@@ -1,13 +1,14 @@
 'use strict';
 // -------------------------------------------------------------------- handlers importing wrapper
-
 const _routesDir = 'handlers';
 const handler = name => {
     const path = `./${_routesDir}/${name}`;
     return require(path);
 };
 
-
+// -------------------------------------------------------------------- some small handlers
+const errorEmitter = () => { throw new Error(); };
+const dummy = (x, r) => r.ok();
 
 // -------------------------------------------------------------------- handlers list
 module.exports = {
@@ -26,12 +27,14 @@ module.exports = {
         'delete /taxes': handler('taxes').delete,
         'get /payments': handler('payments').GET,
         'get /payments/:type': handler('payments').getByType,
-        'put /payments/': handler('payments').put
+        'put /payments/': handler('payments').put,
     },
 
     test: {
-        'get /error': (req, res) => {
-            throw new Error();
-        }
+        'get /error': errorEmitter,
+    },
+
+    dev: {
+        'all /killswitch': dummy
     }
 };
