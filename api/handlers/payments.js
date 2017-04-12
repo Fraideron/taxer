@@ -13,7 +13,7 @@ module.exports = {
             {'data.payments':1}).toArray(
             function(err, items) {
                 assert.equal(null, err);
-                res.send(items);
+                res.json(items);
             });
     },
 

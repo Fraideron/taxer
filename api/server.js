@@ -68,7 +68,10 @@ if (typeEnviroment == 'test') {
 // uncaught errors handler
 app.use(function(err, req, res, next) {
     log.warn(err.stack, 'Something is broken!');
-    res.status(500).send('Something is broken!');
+    res.status(500).json({
+        message: 'Something is broken',
+        code: 500
+    });
 });
-
+//todo: make a function which create an object for response
 module.exports = app;

@@ -10,7 +10,10 @@ module.exports={
             {_id: new mongodb.ObjectID(req.user)},
             {'data.taxes':1}).toArray(function(err, items) {
             assert.equal(null, err);
-            res.send(items);
+            res.json({
+                message: 'GET method for taxes',
+                code: 200
+            })
         });
     },
 
@@ -19,9 +22,11 @@ module.exports={
             {_id: new mongodb.ObjectID(req.user)},
             {$push:{'data.taxes': req.body}}, function (err, result) {
                 assert.equal(null, err);
-                res.send('Iserted document with _id: ' + result);
+                res.json({
+                    message: 'inserted document to taxes',
+                    code: 200
+                });
             });
-        //todo: add inserted _id
     },
 
     post: function (req, res, next) {
@@ -40,11 +45,13 @@ module.exports={
                 assert.equal(err, null);
             }
         );
-        res.send(`Document with _id ${req.params.id} is updated`)
+        res.json({
+            message: `Document with _id ${req.params.id} is updated`,
+            code:200
+        })
     },
 
     delete: function (req, res, next) {
-
         req.model.users.update({
                 _id: new mongodb.ObjectID(req.user),
                 'data.taxes.id': +req.params.id
@@ -52,8 +59,10 @@ module.exports={
             {$set: {'data.taxes.$.status': 'deleted'}},
             function (err, result){
                 assert.equal(err, null);
-                res.send('Document removed with id: ' + req.params.id);
-            }
-        );
+                res.json({
+                    message: `Document removed with id: ${req.params.id}`,
+                    code:200
+                })
+        });
     }
 };
