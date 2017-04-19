@@ -3,6 +3,7 @@
 const bunyan = require('bunyan');
 const log = bunyan.createLogger({name: 'PaymentHelper'});
 
+
 const getAllWastes = type =>
     storage.users[0].data.wastes;
 

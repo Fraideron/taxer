@@ -5,14 +5,12 @@ const mongodb = require('mongodb');
 const assert = require('assert');
 
 module.exports = {
-
     GET:function(req, res,  next){
         req.model.wastes.find({}).toArray(function(err, items) {
             assert.equal(null, err);
             res.json(items);
         });
     },
-
     getByType: function(req, res, next) {
         req.model.wastes.find({"type": req.params.type}).toArray(function(err, items) {
             assert.equal(null, err);
@@ -28,6 +26,7 @@ module.exports = {
                 code: 200
             })
         });
+        //todo: insert _id of pushed waste to users collection
     },
 
     post: function (req, res, next){

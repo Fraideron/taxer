@@ -12,7 +12,8 @@ const bunyan = require('bunyan');
 const log = bunyan.createLogger({name: 'Server'});
 const assert = require('assert');
 
-let collections = ['users', 'wastes'];
+// array with existin existing collection
+let collections = ['users', 'wastes', 'payments'];
 let model = {};
 
 MongoClient.connect("mongodb://localhost:27017/taxer", function(err, db) {

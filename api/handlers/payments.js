@@ -8,9 +8,7 @@ const assert = require('assert');
 
 module.exports = {
     GET: function (req, res, next) {
-        req.model.users.find(
-            {_id: new mongodb.ObjectID(req.user)},
-            {'data.payments':1}).toArray(
+        req.model.payments.find({}).toArray(
             function(err, items) {
                 assert.equal(null, err);
                 res.json(items);
@@ -18,37 +16,91 @@ module.exports = {
     },
 
     getByType: function (req, res, next) {
-        const filter = req.params.type;
-        const payments = storage.users[0].data.payments[0].bill;
-        let result = payments.filter(function (element) {
-            return(element.type === filter);
-        })
-        log.info('GET ByType request from payments');
+        let userIdPayments = {};
+        let result = [];
+        const criteria = {_id: new mongodb.ObjectID(req.user)};
+        const filter = {'data.payments':1};
+        req.model.users.find(criteria, filter).toArray(function (err, items) {
+            assert.equal(null, err);
 
-        res.json(result);
+            userIdPayments = items;
+
+            let subrequestsAmount = userIdPayments[0].data.payments.length;
+            function finalizeRequest(result) {
+                subrequestsAmount--;
+                if (!subrequestsAmount){
+                    if (result.length){
+                        res.json(result);
+                    } else {
+                        res.json({
+                            status: 500,
+                            message: 'Error, parse "payments by type" data'
+                        })
+                    }
+                }
+            }
+
+            userIdPayments[0].data.payments.forEach(function (element) {
+                const criteria = {_id: new mongodb.ObjectID(element._id), 'bill.type': req.params.type};
+                req.model.payments.find(criteria).toArray(function (err, item) {
+                    if(item.length > 0) result.push(item);
+                    finalizeRequest(result);
+                });
+            })
+        });
     },
 
     put: function (req, res, next) {
-        storage.users[0].data.payments.push({
-            date:  new Date().toISOString(),
-            bill:[
-                req.body
-            ]
+        let puttingObj = req.body;
+        let usersPaymentsObject = {};
+        if (puttingObj){
+            req.model.payments.insertOne(puttingObj, function (err, result) {
+                assert.equal(err, null);
+                usersPaymentsObject = {
+                    "_id" : puttingObj._id
+                };
+
+                //insert _id of the last inserted document in payments collection
+                // to the users collection
+                req.model.users.update(
+                    {_id: new mongodb.ObjectID(req.user)},
+                    {$push:{'data.payments': usersPaymentsObject}}, function (err, result) {
+                        assert.equal(null, err);
+                    });
+
+
+            });
+        }
+
+        let wastes = {};
+        let unpayedWastes = {};
+        let usersID = {};
+        req.model.wastes.find({}).toArray( function (err, result) {
+            assert.equal(null, err);
+            wastes = result;
         });
 
-        let paymentForWastes = paymentPutHelper.scatterPayment(paymentPutHelper.getUnpayed('gas'),
-            paymentPutHelper.calcTotalWaste(paymentPutHelper.getUnpayed('gas')));
-        let unpayedWastes = paymentPutHelper.getUnpayed('gas');
+        for(let waste in wastes){
 
-        unpayedWastes.forEach(function (unpWaste, index, array) {
-            unpWaste[index]['payment'] = paymentForWastes[index].payment
-        });
-        log.info('PUT request from payments');
+        }
 
-        res.send({
-            message: 'ok',
+        // let unpayedWastes = paymentPutHelper.getUnpayed('gas');
+        // let paymentForWastes = paymentPutHelper.scatterPayment(unpayedWastes,
+        //     paymentPutHelper.calcTotalWaste(unpayedWastes));
+
+
+
+
+        res.json({
+            message:`payments inserted with id: ${puttingObj._id}`,
             code: 200
-        })
+        });
+// unpayedWastes.forEach(function (unpWaste, index, array) {
+//     unpWaste[index]['payment'] = paymentForWastes[index].payment
+// });
+// log.info('PUT request from payments');
+
+
     }
 
 };
