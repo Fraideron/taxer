@@ -67,40 +67,68 @@ module.exports = {
                     {$push:{'data.payments': usersPaymentsObject}}, function (err, result) {
                         assert.equal(null, err);
                     });
-
-
             });
         }
 
-        let wastes = {};
-        let unpayedWastes = {};
-        let usersID = {};
-        req.model.wastes.find({}).toArray( function (err, result) {
-            assert.equal(null, err);
-            wastes = result;
+        const bill = req.body.bill;
+        console.log(bill);
+        bill.forEach(function (element) {
+            console.log(element);
+            const criteria = {_id: new mongodb.ObjectID(req.user)};
+            const filter = {
+                'data.wastes': 1,
+                'data.taxes': 1
+            };
+            let wastes = {};
+            let taxes = {};
+            req.model.users.findOne(criteria, filter, function (err, result) {
+                assert.equal(null, err);
+                wastes = result.data.wastes;
+                taxes = result.data.taxes;
+                let rate = 0;
+                let billType = element.type;
+                taxes.some(elem => {
+                    if (elem.name === billType) {
+                        rate = elem.amount;
+                        return true;
+                    }
+                });
+                console.log('rate ' + rate);
+
+                // get unpayed wastes by type for one user
+                const criteria = {
+                    _id: {$in: wastes},
+                    type: billType,
+                    rate: {$exists: false}
+                };
+
+                req.model.wastes.find(criteria).toArray((err, result) => {
+                    assert.equal(null, err);
+                    console.log(result);
+                    let paymentForWastes = paymentPutHelper.scatterPayment(result,
+                        paymentPutHelper.calcTotalWaste(result));
+                    console.log(paymentForWastes);
+                    paymentForWastes.forEach(function (elem) {
+                        let toUpdate = {
+                            'payed': element.payed,
+                            'rate': rate
+                        };
+                        req.model.wastes.findOneAndUpdate(
+                            {_id: new mongodb.ObjectID(elem.waste._id)},
+                            {$set: toUpdate},
+                            {$new: true},
+                            function (err, result) {
+                                assert.equal(err, null);
+                                console.log(result);
+                            }
+                        );
+                    });
+                });
+            });
         });
-
-        for(let waste in wastes){
-
-        }
-
-        // let unpayedWastes = paymentPutHelper.getUnpayed('gas');
-        // let paymentForWastes = paymentPutHelper.scatterPayment(unpayedWastes,
-        //     paymentPutHelper.calcTotalWaste(unpayedWastes));
-
-
-
-
         res.json({
-            message:`payments inserted with id: ${puttingObj._id}`,
+            message: 'the waste is updated',
             code: 200
         });
-// unpayedWastes.forEach(function (unpWaste, index, array) {
-//     unpWaste[index]['payment'] = paymentForWastes[index].payment
-// });
-// log.info('PUT request from payments');
-
-
     }
-
 };

@@ -27,7 +27,7 @@ module.exports = {
         'delete /taxes/:id': handler('taxes').delete,
         'get /payments': handler('payments').GET,
         'get /payments/:type': handler('payments').getByType,
-        'put /payments/': handler('payments').put,
+        'put /payments': handler('payments').put,
     },
 
     test: {

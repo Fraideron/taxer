@@ -34,8 +34,8 @@ const calcTotalWaste = wastesChain => {
         if (!index)
             return 0;
         return acc + getWastesDiff(element, array[index-1]);
-    });
-}
+    }, 0);
+};
 
 function scatterPayment(wastes, payment) {
     log.info('Scatter payment in paymentPutHelper component');
@@ -43,8 +43,8 @@ function scatterPayment(wastes, payment) {
     const totalWaste = calcTotalWaste(wastes);
     wastes.forEach(function (waste, index, array) {
         if (!index) return;
-        const diff = getWastesDiff(waste, array[index-1]);
-        const percent = diff / totalWaste;
+        const differ = getWastesDiff(waste, array[index-1]);
+        const percent = differ / totalWaste;
         res.push({
             number: index,
             waste: waste,
