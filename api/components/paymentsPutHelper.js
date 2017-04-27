@@ -3,6 +3,7 @@
 const bunyan = require('bunyan');
 const log = bunyan.createLogger({name: 'PaymentHelper'});
 
+
 const getAllWastes = type =>
     storage.users[0].data.wastes;
 
@@ -25,7 +26,7 @@ const getUnpayed = type => {
         .filter(_typeFilter)
         .filter(isUnpayed)
         .sort(compareDateSorting);
-}
+};
 
 const calcTotalWaste = wastesChain => {   
     log.info('Calculate total wastes values different in paymentPutHelper component');
@@ -33,8 +34,8 @@ const calcTotalWaste = wastesChain => {
         if (!index)
             return 0;
         return acc + getWastesDiff(element, array[index-1]);
-    });
-}
+    }, 0);
+};
 
 function scatterPayment(wastes, payment) {
     log.info('Scatter payment in paymentPutHelper component');
@@ -42,14 +43,14 @@ function scatterPayment(wastes, payment) {
     const totalWaste = calcTotalWaste(wastes);
     wastes.forEach(function (waste, index, array) {
         if (!index) return;
-        const diff = getWastesDiff(waste, array[index-1]);
-        const percent = diff / totalWaste;
+        const differ = getWastesDiff(waste, array[index-1]);
+        const percent = differ / totalWaste;
         res.push({
             number: index,
             waste: waste,
             diff: differ,
             percent: percent,
-            payment: percent * payment
+            payment: percent * (+payment)
         })
     });
     return res;

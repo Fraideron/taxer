@@ -5,49 +5,65 @@ const mongodb = require('mongodb');
 const assert = require('assert');
 
 module.exports = {
-
     GET:function(req, res,  next){
         req.model.wastes.find({}).toArray(function(err, items) {
             assert.equal(null, err);
-            res.send(items);
+            res.json(items);
         });
     },
-
     getByType: function(req, res, next) {
         req.model.wastes.find({"type": req.params.type}).toArray(function(err, items) {
             assert.equal(null, err);
-            res.send(items);
+            res.json(items);
         });
     },
 
     put: function(req, res, next){
         req.model.wastes.insertOne(req.body, function (err, result) {
             assert.equal(err, null);
-            res.send('Iserted document with _id: ' + result["ops"][0]["_id"]);
+            res.json({
+                message:'wastes puted',
+                code: 200
+            })
         });
+        //todo: insert _id of pushed waste to users collection
     },
 
     post: function (req, res, next){
+        if(req.params.id.length < 11){
+            res.json({
+                message: 'waste ID is bad',
+                code: 500
+            })
+        }
         req.model.wastes.update(
             {_id: new mongodb.ObjectID(req.params.id)},
             {$set: req.body},
             {},
             function (err, result) {
                 assert.equal(err, null);
-                log.info(`Document with _id ${req.params.id} is updated`);
+                res.json({
+                    message: 'the waste is updated',
+                    code: 200
+
+                });
             }
         );
-        res.send(`Document with _id ${req.params.id} is updated`)
+
     },
 
-    
+
     delete: function (req, res, next) {
+        if(req.params.id.length < 11){
+            res.json({
+                message: 'waste ID is bad',
+                code: 500
+            })
+        }
         req.model.wastes.remove(
             {_id: new mongodb.ObjectID(req.params.id)},
             function (err, result){
                 assert.equal(err, null);
-                log.info('Document removed from wastes collection');
-                console.log(result);
             });
 
         req.model.users.update(
@@ -55,9 +71,13 @@ module.exports = {
             {$pull:{'data.wastes':{_id: new mongodb.ObjectID(req.params.id)}}},
             function (err, result){
                 assert.equal(err, null);
-                log.info('Document removed from users collection')
             });
-        res.send('Document removed with id: ' + req.params.id);
+
+        res.json({
+            message: 'the waste is removed',
+            code: 200
+        });
+
     }
 
 

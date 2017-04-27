@@ -1,46 +1,65 @@
 'use strict';
 const bunyan = require('bunyan');
 const log = bunyan.createLogger({name: 'Users'});
+const mongodb = require('mongodb');
+const assert = require('assert');
 
 module.exports = {
     GET: function (req, res, next) {
-        log.info('GET request from users handler');
-        res.json({
-            profile: storage.users[0].profile,
-            meta: storage.users[0].meta
+        req.model.users.find(
+            {_id: new mongodb.ObjectID(req.user)},
+            {'data':0}).toArray(function(err, items) {
+            assert.equal(null, err);
+            res.json({
+                result: items,
+                code: 200
+            })
         });
+
     },
 
 
 
     postUserProfile: function (req, res, next) {
-        let options = ['name', 'birth'];
-        if (!req.body) return res.sendStatus(400);
-        for (let key in req.body){
-            if (options.indexOf(key) >= 0){
-                storage.users[0].profile[key] = req.body[key];
+        let body = req.body;
+        let setterHash = {};
+        for (let key in body) {
+            let keyForChange = 'profile.'+ key;
+            setterHash[keyForChange] = body[key];
+        }
+        req.model.users.update({
+                _id: new mongodb.ObjectID(req.user)
+            },
+            {$set: setterHash},
+            function (err, result) {
+                assert.equal(err, null);
             }
-        };
-        log.info('postUserProfile request from users handler');
-        res.send({
-            message: 'ok',
-            code: 200
-        });
+        );
+        res.json({
+            message: `User profile with _id ${req.user} is updated`,
+            code:200
+        })
     },
 
 
     postUserMeta: function (req, res, next) {
-        let options = ['login', 'password', 'hash'];
-        if (!req.body) return res.sendStatus(400);
-        for (let key in req.body){
-            if (options.indexOf(key) >= 0){
-                storage.users[0].meta[key] = req.body[key];
-            }
+        let body = req.body;
+        let setterHash = {};
+        for (let key in body) {
+            let keyForChange = 'meta.'+ key;
+            setterHash[keyForChange] = body[key];
         }
-        log.info('postUserMeta request from users handler');
-        res.send({
-            message: 'ok',
-            code: 200
-        });
+        req.model.users.update({
+                _id: new mongodb.ObjectID(req.user)
+            },
+            {$set: setterHash},
+            function (err, result) {
+                assert.equal(err, null);
+            }
+        );
+        res.json({
+            message: `User meta with _id ${req.user} is updated`,
+            code:200
+        })
     }
-}
+};

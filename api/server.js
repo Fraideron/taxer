@@ -12,9 +12,9 @@ const bunyan = require('bunyan');
 const log = bunyan.createLogger({name: 'Server'});
 const assert = require('assert');
 
-let collections = ['users', 'wastes'];
+// array with existin existing collection
+let collections = ['users', 'wastes', 'payments'];
 let model = {};
-let userID = new mongo.ObjectID('58e4e4b2bb31a671885209a6');
 
 MongoClient.connect("mongodb://localhost:27017/taxer", function(err, db) {
     if(!err) {
@@ -26,6 +26,11 @@ MongoClient.connect("mongodb://localhost:27017/taxer", function(err, db) {
             });
         })
     }
+});
+
+app.use((req, res, next)=>{
+    log.info(`${req.method} ${req.originalUrl}`);
+    next();
 });
 
 // Connect to the db
@@ -40,42 +45,34 @@ app.use(function (req, res, next) {
     next();
 });
 
-
-
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // parse application/json
 app.use(bodyParser.json());
 
-// @todo:
-// What does this function do?
-// Does it makes url with environment?
-// This name is too long and bring no fucking info about what is it doing
-function makeUrlWitnEnviroment(prefix, routes) {
-  for (let rout in routes) {
-    const parsUrl = parseUrl(prefix, rout);
-    // @todo: WTF is this? Bunyan? Really?
-    console.log(`Method: ${parsUrl.method} URL:${parsUrl.url} \n function: ${routes[rout]}`);
-    app[parsUrl.method](parsUrl.url, routes[rout]);
-  }
+function applyRoutes(prefix, routes) {
+    for (let route in routes) {
+        const parsUrl = parseUrl(prefix, route);
+        app[parsUrl.method](parsUrl.url, routes[route]);
+        log.info(parsUrl, 'Listening for route');
+    }
 }
 
-makeUrlWitnEnviroment('api', require('./routes').api);
-// @todo:
-// learn english a bit
-// Words order is inverce, should be 'evironmentType'
+applyRoutes('api', require('./routes').api);
 let typeEnviroment = appConfigs.environment;
 if (typeEnviroment == 'test') {
-  makeUrlWitnEnviroment(typeEnviroment, require('./routes').test);
+    applyRoutes(typeEnviroment, require('./routes').test);
 }
+
 
 // uncaught errors handler
 app.use(function(err, req, res, next) {
-  log.warn('Something is broken!');
-  // @todo: WTF is this? Bunyan? Really?
-  console.error(err.stack);
-  res.status(500).send('Something is broken!');
+    log.warn(err.stack, 'Something is broken!');
+    res.status(500).json({
+        message: 'Something is broken',
+        code: 500
+    });
 });
-
+//todo: make a function which create an object for response
 module.exports = app;
