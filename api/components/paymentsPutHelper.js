@@ -26,7 +26,7 @@ const getUnpayed = type => {
         .filter(_typeFilter)
         .filter(isUnpayed)
         .sort(compareDateSorting);
-}
+};
 
 const calcTotalWaste = wastesChain => {   
     log.info('Calculate total wastes values different in paymentPutHelper component');
@@ -50,7 +50,7 @@ function scatterPayment(wastes, payment) {
             waste: waste,
             diff: differ,
             percent: percent,
-            payment: percent * payment
+            payment: percent * (+payment)
         })
     });
     return res;

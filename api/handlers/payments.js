@@ -70,10 +70,8 @@ module.exports = {
             });
         }
 
-        const bill = req.body.bill;
-        console.log(bill);
-        bill.forEach(function (element) {
-            console.log(element);
+        req.body.bill.forEach(function (bill) {
+            console.log(bill);
             const criteria = {_id: new mongodb.ObjectID(req.user)};
             const filter = {
                 'data.wastes': 1,
@@ -86,15 +84,18 @@ module.exports = {
                 wastes = result.data.wastes;
                 taxes = result.data.taxes;
                 let rate = 0;
-                let billType = element.type;
+                let billType = bill.type;
+                let lastWasteId = 0;
                 taxes.some(elem => {
                     if (elem.name === billType) {
                         rate = elem.amount;
+                        lastWasteId = elem.lastWaste;
                         return true;
                     }
                 });
-                console.log('rate ' + rate);
 
+
+                console.log(`wastes: ${wastes} \n billType  ${billType}`);
                 // get unpayed wastes by type for one user
                 const criteria = {
                     _id: {$in: wastes},
@@ -102,33 +103,55 @@ module.exports = {
                     rate: {$exists: false}
                 };
 
-                req.model.wastes.find(criteria).toArray((err, result) => {
-                    assert.equal(null, err);
-                    console.log(result);
-                    let paymentForWastes = paymentPutHelper.scatterPayment(result,
-                        paymentPutHelper.calcTotalWaste(result));
-                    console.log(paymentForWastes);
-                    paymentForWastes.forEach(function (elem) {
-                        let toUpdate = {
-                            'payed': element.payed,
-                            'rate': rate
-                        };
-                        req.model.wastes.findOneAndUpdate(
-                            {_id: new mongodb.ObjectID(elem.waste._id)},
-                            {$set: toUpdate},
-                            {$new: true},
-                            function (err, result) {
-                                assert.equal(err, null);
-                                console.log(result);
-                            }
-                        );
+                req.model.wastes.find(criteria).toArray((err, resultUnpWaste) => {
+                    //get last payed elemnt from taxer collection,
+                    //and find it in wastes
+                    req.model.wastes.find({_id: lastWasteId}).toArray((err, lastWasteinTaxes) => {
+                        assert.equal(null, err);
+                        resultUnpWaste.unshift(lastWasteinTaxes[0]);
+
+                        let paymentForWastes = paymentPutHelper.scatterPayment(resultUnpWaste,
+                            bill.payed);
+                        paymentForWastes.forEach(function (elem) {
+                            let toUpdate = {
+                                'payed': elem.payment,
+                                'rate': rate
+                            };
+
+                            req.model.wastes.findOneAndUpdate(
+                                {_id: new mongodb.ObjectID(elem.waste._id)},
+                                {$set: toUpdate},
+                                {$new: true},
+                                function (err, result) {
+                                    assert.equal(err, null);
+                                }
+                            );
+                        });
+//коли додаються нові вейти з  типом то їх не бачить
+
+                        let lastWasteId = resultUnpWaste[resultUnpWaste.length-1]._id;
+                        console.log(lastWasteId);
+                        req.model.users.findOneAndUpdate({
+                            _id: new mongodb.ObjectID(req.user),
+                            'data.taxes.name': billType
+                        },{
+                           $set:{'data.taxes.$.lastWaste': new mongodb.ObjectID(lastWasteId)}
+                        }, function (err, result) {
+                            assert.equal(err, null);
+                            console.log(result);
+                        })
                     });
                 });
             });
         });
+
         res.json({
             message: 'the waste is updated',
             code: 200
         });
     }
 };
+
+
+
+
