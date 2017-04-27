@@ -23,11 +23,11 @@ module.exports = {
         'delete /wastes/:id': handler('wastes').delete,
         'get /taxes': handler('taxes').GET,
         'put /taxes': handler('taxes').put,
-        'post /taxes/:id': handler('taxes').post,
-        'delete /taxes/:id': handler('taxes').delete,
+        'post /taxes/:type': handler('taxes').post,
+        'delete /taxes': handler('taxes').delete,
         'get /payments': handler('payments').GET,
         'get /payments/:type': handler('payments').getByType,
-        'put /payments': handler('payments').put,
+        'put /payments/': handler('payments').put,
     },
 
     test: {
